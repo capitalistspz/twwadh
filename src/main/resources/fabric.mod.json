@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "twwadh",
+  "version": "1.0",
+  "description": "Features based on things that people in the Minecraft Commands server want in the base game",
+  "name": "Things We Want And Don't Have",
+  "authors": [
+    "capitalistspz"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "capitalistspz.twwadh.Twwadh"
+    ]
+  },
+  "mixins": [
+    "twwadh.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.14",
+    "minecraft": ">=1.19.4- <1.19.5-"
+  }
+}

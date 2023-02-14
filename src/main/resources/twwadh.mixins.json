@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "capitalistspz.twwadh.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "advancement.criterion.CriteriaMxn",
+    "command.EntitySelectorMxn",
+    "command.EntitySelectorOptionsMxn",
+    "command.EntitySelectorReaderMxn",
+    "entity.player.PlayerEntityMxn",
+    "server.command.RideCommandMxn",
+    "block.BlockMxn"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
