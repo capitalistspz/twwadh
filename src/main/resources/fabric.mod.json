@@ -15,6 +15,7 @@
       "capitalistspz.twwadh.Twwadh"
     ]
   },
+  "accessWidener": "twwadh.accessWidener",
   "mixins": [
     "twwadh.mixins.json"
   ],
