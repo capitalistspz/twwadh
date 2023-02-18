@@ -14,5 +14,9 @@
   "twwadh.locate.location.success": "%s is at %s (%s blocks away)",
   "twwadh.location.set.success": "Set %s to position %s",
   "twwadh.location.remove.success": "Removed location %s",
-  "twwadh.location.remove.fail": "Location %s does not exist"
+  "twwadh.location.remove.fail": "Location %s does not exist",
+  "twwadh.location.get.success": "Location %s is at %s",
+  "twwadh.location.get.fail": "Location %s does not exist",
+  "twwadh.location.get.axis.success": "%s has the following %s : %s",
+  "twwadh.location.get.axis.scaled.success": "%s %s after scale factor of %s is %s"
 }

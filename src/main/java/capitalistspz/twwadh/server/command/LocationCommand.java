@@ -1,9 +1,11 @@
 package capitalistspz.twwadh.server.command;
 
+import capitalistspz.twwadh.command.AxisArgumentType;
 import capitalistspz.twwadh.command.LocationPosArgument;
 import capitalistspz.twwadh.interfaces.IHaveLocationStorage;
 import capitalistspz.twwadh.util.TextHelper;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.argument.IdentifierArgumentType;
@@ -12,6 +14,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
@@ -34,14 +37,47 @@ public class LocationCommand {
                 argument("namespace", StringArgumentType.word()).
                         executes(cmd -> executeListLocationEntries(cmd.getSource(), StringArgumentType.getString(cmd, "namespace")))).then(
                 argument("identifier", IdentifierArgumentType.identifier()).suggests(LocationPosArgument.SUGGESTION_PROVIDER).
-                        executes(cmd -> executeGetLocation(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"))));
+                        executes(cmd -> executeGetLocation(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"))).then(
+                        argument("axis", AxisArgumentType.axis()).
+                                executes(cmd -> executeGetAxis(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd ,"identifier"), AxisArgumentType.getAxis(cmd, "axis"), null)).then(
+                                argument("scale", DoubleArgumentType.doubleArg()).
+                                        executes(cmd -> executeGetAxis(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd ,"identifier"), AxisArgumentType.getAxis(cmd, "axis"), DoubleArgumentType.getDouble(cmd, "scale"))))));
         command.then(commandRemove).
                 then(commandSet).
                 then(commandGet);
         dispatcher.register(command);
 
     }
+    public static int executeGetAxis(ServerCommandSource src, Identifier id, Direction.Axis axis, Double scale){
+        var server = (IHaveLocationStorage)src.getServer();
+        var pos = server.getLocationStorage().get(id);
 
+        if (pos != null){
+            if (scale == null){
+                var value = pos.getComponentAlongAxis(axis);
+                src.sendFeedback(Text.translatableWithFallback(
+                        "twwadh.location.get.axis.success",
+                        String.format("%s has the following %s : %sd", id, axis, value),
+                        id.toString()), false);
+                return (int)value;
+            }
+            else {
+                var value = (int)(pos.getComponentAlongAxis(axis) * scale);
+                src.sendFeedback(Text.translatableWithFallback(
+                        "twwadh.location.get.axis.scaled.success",
+                        String.format("%s %s after scale factor of %s is %s", id, axis, scale, value),
+                        id, axis, scale, value), false);
+                return value;
+            }
+        }
+        else {
+            src.sendError(Text.translatable(
+                    "twwadh.location.get.fail",
+                    String.format("Location %s does not exist", id),
+                    id.toString()));
+            return 0;
+        }
+    }
     public static int executeSetLocation(ServerCommandSource src, Identifier id, Vec3d vec3d){
         var server = (IHaveLocationStorage)src.getServer();
         var storage = server.getLocationStorage();
@@ -61,7 +97,7 @@ public class LocationCommand {
         var pos = storage.get(id);
         if (pos != null){
             src.sendFeedback(Text.translatableWithFallback(
-                    "twwadh.location.remove.success",
+                    "twwadh.location.get.success",
                     String.format("Location %s is at %s", id, pos),
                     id.toString()), false);
             return SINGLE_SUCCESS;
