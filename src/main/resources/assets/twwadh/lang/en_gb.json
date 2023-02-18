@@ -10,5 +10,9 @@
   "twwadh.argument.entity.selector.owner": "The owner of this pet",
   "twwadh.argument.entity.selector.passenger": "The entities riding this entity",
   "twwadh.argument.entity.selector.target": "The attack target of this entity",
-  "twwadh.argument.entity.selector.vehicle": "The entity currently being ridden"
+  "twwadh.argument.entity.selector.vehicle": "The entity currently being ridden",
+  "twwadh.locate.location.success": "%s is at %s (%s blocks away)",
+  "twwadh.location.set.success": "Set %s to position %s",
+  "twwadh.location.remove.success": "Removed location %s",
+  "twwadh.location.remove.fail": "Location %s does not exist"
 }

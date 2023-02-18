@@ -1,4 +1,4 @@
-package capitalistspz.twwadh.mixin.command;
+package capitalistspz.twwadh.mixin.server.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

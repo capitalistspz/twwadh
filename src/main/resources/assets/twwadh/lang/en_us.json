@@ -1,6 +1,6 @@
 {
   "twwadh.argument.entity.options.attack_time.invalid": "Attack time must be between 0 and 200 ticks inclusive",
-  "twwadh.argument.entity.options.index.description": "",
+  "twwadh.argument.entity.options.index.description": "Index of the entity in the list",
   "twaddh.argument.entity.options.relation.invalid": "Invalid or unknown relation type '%s'",
   "twwadh.argument.entity.options.attack_time.description": "Time since the last attack occurred",
   "twwadh.argument.entity.selector.attacker": "The last entity to attack in the last 5 seconds",
@@ -10,5 +10,9 @@
   "twwadh.argument.entity.selector.owner": "The owner of this pet",
   "twwadh.argument.entity.selector.passenger": "The entities riding this entity",
   "twwadh.argument.entity.selector.target": "The attack target of this entity",
-  "twwadh.argument.entity.selector.vehicle": "The entity currently being ridden"
+  "twwadh.argument.entity.selector.vehicle": "The entity currently being ridden",
+  "twwadh.locate.location.success": "%s is at %s (%s blocks away)",
+  "twwadh.location.set.success": "Set %s to position %s",
+  "twwadh.location.remove.success": "Removed location %s",
+  "twwadh.location.remove.fail": "Location %s does not exist"
 }

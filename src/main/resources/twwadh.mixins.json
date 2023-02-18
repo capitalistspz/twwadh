@@ -6,11 +6,15 @@
   "mixins": [
     "advancement.criterion.CriteriaMxn",
     "block.BlockMxn",
+    "command.CommandManagerMxn",
     "command.EntitySelectorMxn",
     "command.EntitySelectorOptionsMxn",
     "command.EntitySelectorReaderMxn",
-    "command.ExecuteCommandMxn",
+    "command.arguments.BlockPosArgumentTypeMxn",
+    "command.arguments.Vec3ArgumentTypeMxn",
     "entity.player.PlayerEntityMxn",
+    "server.MinecraftServerMxn",
+    "server.command.ExecuteCommandMxn",
     "server.command.RideCommandMxn"
   ],
   "client": [
