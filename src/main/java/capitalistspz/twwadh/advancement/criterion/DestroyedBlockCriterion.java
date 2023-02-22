@@ -1,9 +1,5 @@
 package capitalistspz.twwadh.advancement.criterion;
 
-/*
- * Decompiled with CFR 0.2.0 (FabricMC d28b102d).
- */
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.advancement.criterion.AbstractCriterion;
@@ -58,9 +54,8 @@ public class DestroyedBlockCriterion
         return null;
     }
 
-    public void trigger(ServerPlayerEntity player, BlockPos blockPos, ItemStack stack) {
-        BlockState blockState = player.getWorld().getBlockState(blockPos);
-        this.trigger(player, conditions -> conditions.matches(blockState, blockPos, player.getWorld(), stack));
+    public void trigger(ServerPlayerEntity player, BlockState oldState, BlockPos blockPos, ItemStack stack) {
+        this.trigger(player, conditions -> conditions.matches(oldState, blockPos, player.getWorld(), stack));
     }
 
     public static class Conditions

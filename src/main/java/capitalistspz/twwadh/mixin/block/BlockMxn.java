@@ -19,6 +19,6 @@ public class BlockMxn {
     @Inject(method="afterBreak", at=@At("HEAD"))
     public void triggerDestroyBlockAdvancementCriteria(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci){
         if (player instanceof ServerPlayerEntity serverPlayerEntity)
-            CustomCriteria.DESTROYED_BLOCK.trigger(serverPlayerEntity, pos, stack);
+            CustomCriteria.DESTROYED_BLOCK.trigger(serverPlayerEntity, state, pos, stack);
     }
 }

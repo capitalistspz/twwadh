@@ -2,6 +2,7 @@ package capitalistspz.twwadh.mixin.advancement.criterion;
 
 import capitalistspz.twwadh.advancement.criterion.CustomCriteria;
 import capitalistspz.twwadh.advancement.criterion.DestroyedBlockCriterion;
+import capitalistspz.twwadh.advancement.criterion.EnderPearlLandCriterion;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,6 +21,7 @@ public abstract class CriteriaMxn {
     @Inject(method="<clinit>", at=@At("TAIL"))
     private static void addCriteria(CallbackInfo ci){
         CustomCriteria.DESTROYED_BLOCK = register(new DestroyedBlockCriterion());
+        CustomCriteria.ENDER_PEARL_LANDED = register(new EnderPearlLandCriterion());
     }
 
 }
