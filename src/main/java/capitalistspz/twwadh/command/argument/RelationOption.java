@@ -1,4 +1,4 @@
-package capitalistspz.twwadh.command;
+package capitalistspz.twwadh.command.argument;
 
 public enum RelationOption {
     UNSET,

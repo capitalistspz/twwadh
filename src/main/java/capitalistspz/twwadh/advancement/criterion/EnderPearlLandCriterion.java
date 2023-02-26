@@ -26,10 +26,12 @@ public class EnderPearlLandCriterion
         extends AbstractCriterion<EnderPearlLandCriterion.Conditions> {
 
     static final Identifier ID = new Identifier("ender_pearl_land");
+
     @Override
     public Identifier getId() {
         return ID;
     }
+
     @Override
     protected Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
         var enderPearl = EntityPredicate.Extended.getInJson(obj, "ender_pearl", predicateDeserializer);
@@ -54,7 +56,7 @@ public class EnderPearlLandCriterion
         return null;
     }
 
-    public void trigger(ServerPlayerEntity player, EnderPearlEntity enderPearl, BlockPos blockPos, @Nullable Entity collidedEntity){
+    public void trigger(ServerPlayerEntity player, EnderPearlEntity enderPearl, BlockPos blockPos, @Nullable Entity collidedEntity) {
         LootContext enderPearlContext = EntityPredicate.createAdvancementEntityLootContext(player, enderPearl);
         LootContext collidedEntityContext = collidedEntity != null ? EntityPredicate.createAdvancementEntityLootContext(player, collidedEntity) : null;
 
@@ -81,7 +83,7 @@ public class EnderPearlLandCriterion
             this.collidedEntity = entity;
         }
 
-        public static Conditions createEnderPearlLand(EntityPredicate.Extended player, EntityPredicate.Extended enderPearl, Block block, StatePredicate blockState, LocationPredicate location, EntityPredicate.Extended entity){
+        public static Conditions createEnderPearlLand(EntityPredicate.Extended player, EntityPredicate.Extended enderPearl, Block block, StatePredicate blockState, LocationPredicate location, EntityPredicate.Extended entity) {
             return new Conditions(player, enderPearl, block, blockState, location, entity);
         }
 
@@ -89,23 +91,24 @@ public class EnderPearlLandCriterion
             if (!(this.collidedEntity == EntityPredicate.Extended.EMPTY || entityContext != null && this.collidedEntity.test(entityContext))) {
                 return false;
             }
-            if (this.block != null && !state.isOf(this.block)){
+            if (this.block != null && !state.isOf(this.block)) {
                 return false;
             }
-            if (!this.state.test(state)){
+            if (!this.state.test(state)) {
                 return false;
             }
-            if (!this.location.test(world, pos.getX(), pos.getY(), pos.getZ())){
+            if (!this.location.test(world, pos.getX(), pos.getY(), pos.getZ())) {
                 return false;
             }
             return this.enderPearl.test(enderPearl);
         }
+
         @Override
-        public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer){
+        public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
             JsonObject obj = super.toJson(predicateSerializer);
 
             obj.add("ender_pearl", this.enderPearl.toJson(predicateSerializer));
-            if (this.block != null){
+            if (this.block != null) {
                 obj.addProperty("block", Registries.BLOCK.getId(this.block).toString());
             }
             obj.add("state", this.state.toJson());

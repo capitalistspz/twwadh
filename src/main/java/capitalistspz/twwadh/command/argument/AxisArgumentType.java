@@ -1,4 +1,4 @@
-package capitalistspz.twwadh.command;
+package capitalistspz.twwadh.command.argument;
 
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.argument.EnumArgumentType;
@@ -9,9 +9,12 @@ public class AxisArgumentType extends EnumArgumentType<Direction.Axis> {
     private AxisArgumentType() {
         super(Direction.Axis.CODEC, Direction.Axis::values);
     }
-    public static AxisArgumentType axis(){ return new AxisArgumentType(); }
 
-    public static Direction.Axis getAxis(CommandContext<ServerCommandSource> context, String id){
+    public static AxisArgumentType axis() {
+        return new AxisArgumentType();
+    }
+
+    public static Direction.Axis getAxis(CommandContext<ServerCommandSource> context, String id) {
         return context.getArgument(id, Direction.Axis.class);
     }
 }

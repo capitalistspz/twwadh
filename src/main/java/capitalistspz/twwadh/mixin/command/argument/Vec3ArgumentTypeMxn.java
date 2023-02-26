@@ -1,6 +1,6 @@
-package capitalistspz.twwadh.mixin.command.arguments;
+package capitalistspz.twwadh.mixin.command.argument;
 
-import capitalistspz.twwadh.command.LocationPosArgument;
+import capitalistspz.twwadh.command.argument.LocationPosArgument;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.DefaultPosArgument;
@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Vec3ArgumentType.class)
 public class Vec3ArgumentTypeMxn {
-
-    @Shadow @Final private boolean centerIntegers;
-
-    @Inject(at=@At(value = "INVOKE", target = "Lnet/minecraft/command/argument/DefaultPosArgument;parse(Lcom/mojang/brigadier/StringReader;Z)Lnet/minecraft/command/argument/DefaultPosArgument;"), method="parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/command/argument/PosArgument;", cancellable = true)
+    @Inject(method = "parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/command/argument/PosArgument;",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/command/argument/DefaultPosArgument;parse(Lcom/mojang/brigadier/StringReader;Z)Lnet/minecraft/command/argument/DefaultPosArgument;"),
+            cancellable = true)
     private void parseId(StringReader stringReader, CallbackInfoReturnable<PosArgument> cir) throws CommandSyntaxException {
         var pos = stringReader.getCursor();
         try {
@@ -29,4 +29,9 @@ public class Vec3ArgumentTypeMxn {
             cir.setReturnValue(locArg);
         }
     }
+
+    @Shadow
+    @Final
+    private boolean centerIntegers;
+
 }

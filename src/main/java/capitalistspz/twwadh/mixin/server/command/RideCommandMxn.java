@@ -19,18 +19,10 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 @Mixin(RideCommand.class)
 public abstract class RideCommandMxn {
-
-    @Shadow
-    private static int executeMount(ServerCommandSource source, Entity rider, Entity vehicle) {
-        return 0;
-    }
-
-    @ModifyArg(method="register",
-            at=@At(
-            value="INVOKE",
-            target="Lcom/mojang/brigadier/CommandDispatcher;register(Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/tree/LiteralCommandNode;")
-            )
-    private static<S> LiteralArgumentBuilder<S> addForcedArgument(LiteralArgumentBuilder<S> command) {
+    @ModifyArg(method = "register",
+            at = @At(value = "INVOKE",
+                    target = "Lcom/mojang/brigadier/CommandDispatcher;register(Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/tree/LiteralCommandNode;"))
+    private static <S> LiteralArgumentBuilder<S> addForcedArgument(LiteralArgumentBuilder<S> command) {
         var lab = argument("target", EntityArgumentType.entity()).then(
                 literal("mount").then(
                         argument("vehicle", EntityArgumentType.entity()).then(
@@ -38,12 +30,19 @@ public abstract class RideCommandMxn {
                                         .executes(cmd -> executeMountForced(cmd.getSource(), EntityArgumentType.getEntity(cmd, "target"), EntityArgumentType.getEntity(cmd, "vehicle"), BoolArgumentType.getBool(cmd, "forced"))))));
         return command.then((ArgumentBuilder<S, ?>) lab);
     }
+
     private static int executeMountForced(ServerCommandSource src, Entity rider, Entity vehicle, boolean forced) {
         int result = executeMount(src, rider, vehicle);
-        if (forced && (rider instanceof PlayerEntity player)){
-            ((IForcedMount)player).setForciblyMounted(true);
+        if (forced && (rider instanceof PlayerEntity player)) {
+            ((IForcedMount) player).setForciblyMounted(true);
         }
         return result;
     }
+
+    @Shadow
+    private static int executeMount(ServerCommandSource source, Entity rider, Entity vehicle) {
+        return 0;
+    }
+
 }
 

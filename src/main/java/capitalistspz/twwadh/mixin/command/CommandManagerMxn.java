@@ -14,10 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CommandManager.class)
 public abstract class CommandManagerMxn {
-    @Shadow @Final private CommandDispatcher<ServerCommandSource> dispatcher;
-
-    @Inject(at=@At("RETURN"), method = "<init>")
-    void addCommands(CommandManager.RegistrationEnvironment environment, CommandRegistryAccess commandRegistryAccess, CallbackInfo ci){
+    @Inject(method = "<init>",
+            at = @At(value = "RETURN"))
+    void addCommands(CommandManager.RegistrationEnvironment environment, CommandRegistryAccess commandRegistryAccess, CallbackInfo ci) {
         LocationCommand.register(this.dispatcher);
     }
+
+    @Shadow
+    @Final
+    private CommandDispatcher<ServerCommandSource> dispatcher;
+
 }

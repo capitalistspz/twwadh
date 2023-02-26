@@ -1,6 +1,6 @@
-package capitalistspz.twwadh.mixin.command.arguments;
+package capitalistspz.twwadh.mixin.command.argument;
 
-import capitalistspz.twwadh.command.LocationPosArgument;
+import capitalistspz.twwadh.command.argument.LocationPosArgument;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.BlockPosArgumentType;
@@ -13,13 +13,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockPosArgumentType.class)
 public class BlockPosArgumentTypeMxn {
-    @Inject(at= @At(value = "INVOKE", target = "Lnet/minecraft/command/argument/DefaultPosArgument;parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/command/argument/DefaultPosArgument;"), method="parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/command/argument/PosArgument;", cancellable = true)
+    @Inject(method = "parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/command/argument/PosArgument;",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/command/argument/DefaultPosArgument;parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/command/argument/DefaultPosArgument;"),
+            cancellable = true)
     private void parseId(StringReader stringReader, CallbackInfoReturnable<PosArgument> cir) throws CommandSyntaxException {
         var pos = stringReader.getCursor();
         try {
             cir.setReturnValue(DefaultPosArgument.parse(stringReader));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             stringReader.setCursor(pos);
             var locArg = LocationPosArgument.parse(stringReader);
             cir.setReturnValue(locArg);

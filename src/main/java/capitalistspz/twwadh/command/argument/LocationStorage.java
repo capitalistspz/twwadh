@@ -1,4 +1,4 @@
-package capitalistspz.twwadh.command;
+package capitalistspz.twwadh.command.argument;
 
 import com.google.common.collect.Maps;
 import net.minecraft.nbt.NbtCompound;
@@ -19,19 +19,22 @@ public class LocationStorage {
     }
 
     private PersistentState createStorage(String namespace) {
-       PersistentState persistentState = new PersistentState();
+        PersistentState persistentState = new PersistentState();
         this.locationStorages.put(namespace, persistentState);
         return persistentState;
     }
-    public Stream<String> getKeys(){
+
+    public Stream<String> getKeys() {
         return this.locationStorages.keySet().stream();
     }
+
     public Vec3d get(Identifier id) {
         String string = id.getNamespace();
         PersistentState persistentState = this.stateManager.get(data -> this.createStorage(string).readNbt(data), LocationStorage.getSaveKey(string));
         return persistentState != null ? persistentState.get(id.getPath()) : null;
     }
-    public Stream<Map.Entry<String, Vec3d>> getEntries(String namespace){
+
+    public Stream<Map.Entry<String, Vec3d>> getEntries(String namespace) {
         var storage = this.locationStorages.get(namespace);
         if (storage == null)
             return Stream.empty();
@@ -45,6 +48,7 @@ public class LocationStorage {
         String string = id.getNamespace();
         this.stateManager.getOrCreate(data -> this.createStorage(string).readNbt(data), () -> this.createStorage(string), LocationStorage.getSaveKey(string)).set(id.getPath(), pos);
     }
+
     public boolean remove(Identifier id) {
         String string = id.getNamespace();
         PersistentState persistentState = this.stateManager.get(data -> this.createStorage(string).readNbt(data), LocationStorage.getSaveKey(string));
@@ -62,11 +66,13 @@ public class LocationStorage {
     static class PersistentState extends net.minecraft.world.PersistentState {
         private static final String CONTENTS_KEY = "positions";
         private final Map<String, Vec3d> map = Maps.newHashMap();
-        PersistentState(){}
+
+        PersistentState() {
+        }
 
         public PersistentState readNbt(NbtCompound nbt) {
             var positions = nbt.getCompound(CONTENTS_KEY);
-            for (String element : positions.getKeys()){
+            for (String element : positions.getKeys()) {
                 var posCompound = positions.getCompound(element);
                 var pos = new Vec3d(
                         posCompound.getDouble("X"),
@@ -76,6 +82,7 @@ public class LocationStorage {
             }
             return this;
         }
+
         @Override
         public NbtCompound writeNbt(NbtCompound nbt) {
             NbtCompound nbtCompound = new NbtCompound();
@@ -93,15 +100,17 @@ public class LocationStorage {
         public Vec3d get(String name) {
             return this.map.get(name);
         }
-        public Stream<Map.Entry<String, Vec3d>> getEntries(){
+
+        public Stream<Map.Entry<String, Vec3d>> getEntries() {
             return this.map.entrySet().stream();
         }
 
-        public void set(String name, Vec3d pos){
+        public void set(String name, Vec3d pos) {
             this.map.put(name, pos);
             this.markDirty();
         }
-        public boolean remove(String name){
+
+        public boolean remove(String name) {
             return this.map.remove(name) != null;
         }
 

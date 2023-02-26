@@ -1,6 +1,6 @@
 package capitalistspz.twwadh.mixin.server;
 
-import capitalistspz.twwadh.command.LocationStorage;
+import capitalistspz.twwadh.command.argument.LocationStorage;
 import capitalistspz.twwadh.interfaces.IHaveLocationStorage;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
@@ -13,17 +13,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMxn implements IHaveLocationStorage {
-    @Shadow public abstract Iterable<ServerWorld> getWorlds();
-
     LocationStorage locationStorage;
-    @Inject(method="createWorlds", at=@At("TAIL"))
-    private void createLocationStorage(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
+
+    @Inject(method = "createWorlds",
+            at = @At(value = "TAIL"))
+    private void createLocationStorage(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci) {
         // :)
         for (var world : this.getWorlds()) {
             this.locationStorage = new LocationStorage(world.getPersistentStateManager());
             break;
         }
     }
+
     @Override
     public LocationStorage getLocationStorage() {
         if (this.locationStorage == null) {
@@ -31,4 +32,7 @@ public abstract class MinecraftServerMxn implements IHaveLocationStorage {
         }
         return this.locationStorage;
     }
+
+    @Shadow
+    public abstract Iterable<ServerWorld> getWorlds();
 }

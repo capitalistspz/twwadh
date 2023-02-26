@@ -15,9 +15,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Block.class)
-public class BlockMxn {
-    @Inject(method="afterBreak", at=@At("HEAD"))
-    public void triggerDestroyBlockAdvancementCriteria(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci){
+public abstract class BlockMxn {
+    @Inject(method = "afterBreak",
+            at = @At(value = "HEAD"))
+    public void triggerDestroyBlockAdvancementCriteria(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
         if (player instanceof ServerPlayerEntity serverPlayerEntity)
             CustomCriteria.DESTROYED_BLOCK.trigger(serverPlayerEntity, state, pos, stack);
     }

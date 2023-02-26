@@ -22,13 +22,10 @@ import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 @SuppressWarnings({"unchecked", "rawtypes"})
 @Mixin(ExecuteCommand.class)
 public abstract class ExecuteCommandMxn {
-    @Shadow
-    private static ArgumentBuilder<ServerCommandSource, ?> addConditionLogic(CommandNode<ServerCommandSource> root, ArgumentBuilder<ServerCommandSource, ?> builder, boolean positive, ExecuteCommand.Condition condition) {
-        return null;
-    }
 
-    @Inject(method="addConditionArguments", at=@At("TAIL"))
-    private static void addTeamCondition(CommandNode<ServerCommandSource> root, LiteralArgumentBuilder<ServerCommandSource> argumentBuilder, boolean positive, CommandRegistryAccess commandRegistryAccess, CallbackInfoReturnable<ArgumentBuilder<ServerCommandSource, ?>> cir){
+    @Inject(method = "addConditionArguments",
+            at = @At(value = "TAIL"))
+    private static void addTeamCondition(CommandNode<ServerCommandSource> root, LiteralArgumentBuilder<ServerCommandSource> argumentBuilder, boolean positive, CommandRegistryAccess commandRegistryAccess, CallbackInfoReturnable<ArgumentBuilder<ServerCommandSource, ?>> cir) {
         var matchesLogic = addConditionLogic(root, argument("team", TeamArgumentType.team()), positive, (ctx) -> {
             Entity entity = EntityArgumentType.getEntity(ctx, "target");
             Team team = TeamArgumentType.getTeam(ctx, "team");
@@ -43,10 +40,15 @@ public abstract class ExecuteCommandMxn {
 
         var teamCondition = literal("team").then(
                 argument("target", EntityArgumentType.entity()).then(
-                        literal("=").then((ArgumentBuilder<Object, ?>)(Object)equalsLogic)).then(
-                        literal("matches").then((ArgumentBuilder<Object, ?>)(Object) matchesLogic)));
+                        literal("=").then((ArgumentBuilder<Object, ?>) (Object) equalsLogic)).then(
+                        literal("matches").then((ArgumentBuilder<Object, ?>) (Object) matchesLogic)));
 
-        argumentBuilder.then((LiteralArgumentBuilder)teamCondition);
+        argumentBuilder.then((LiteralArgumentBuilder) teamCondition);
+    }
+
+    @Shadow
+    private static ArgumentBuilder<ServerCommandSource, ?> addConditionLogic(CommandNode<ServerCommandSource> root, ArgumentBuilder<ServerCommandSource, ?> builder, boolean positive, ExecuteCommand.Condition condition) {
+        return null;
     }
 
 }

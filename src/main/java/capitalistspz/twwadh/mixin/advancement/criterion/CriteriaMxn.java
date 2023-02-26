@@ -13,15 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Criteria.class)
 public abstract class CriteriaMxn {
+    @Inject(method = "<clinit>",
+            at = @At(value = "TAIL"))
+    private static void addCriteria(CallbackInfo ci) {
+        CustomCriteria.DESTROYED_BLOCK = register(new DestroyedBlockCriterion());
+        CustomCriteria.ENDER_PEARL_LANDED = register(new EnderPearlLandCriterion());
+    }
+
     @Shadow
     private static <T extends Criterion<?>> T register(T object) {
         return null;
-    }
-
-    @Inject(method="<clinit>", at=@At("TAIL"))
-    private static void addCriteria(CallbackInfo ci){
-        CustomCriteria.DESTROYED_BLOCK = register(new DestroyedBlockCriterion());
-        CustomCriteria.ENDER_PEARL_LANDED = register(new EnderPearlLandCriterion());
     }
 
 }

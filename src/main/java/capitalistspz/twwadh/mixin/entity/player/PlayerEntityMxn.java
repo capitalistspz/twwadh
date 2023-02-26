@@ -14,22 +14,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMxn extends LivingEntity implements IForcedMount {
     boolean forciblyMounted = false;
-    protected PlayerEntityMxn(EntityType<? extends LivingEntity> entityType, World world) {
-        super(entityType, world);
-    }
 
-    @Inject(method = "shouldDismount", at=@At("RETURN"), cancellable = true)
-    public void disallowDismountIfForced(CallbackInfoReturnable<Boolean> cir){
+    @Inject(method = "shouldDismount",
+            at = @At(value = "RETURN"),
+            cancellable = true)
+    public void disallowDismountIfForced(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(cir.getReturnValue() && !this.forciblyMounted);
     }
 
-    @Inject(method="dismountVehicle", at=@At("HEAD"))
-    public void resetForced(CallbackInfo ci){
+    @Inject(method = "dismountVehicle",
+            at = @At(value = "HEAD"))
+    public void resetForced(CallbackInfo ci) {
         this.setForciblyMounted(false);
     }
 
-    public void setForciblyMounted(boolean value){
+    public void setForciblyMounted(boolean value) {
         this.forciblyMounted = value;
+    }
+
+    protected PlayerEntityMxn(EntityType<? extends LivingEntity> entityType, World world) {
+        super(entityType, world);
     }
 
 }

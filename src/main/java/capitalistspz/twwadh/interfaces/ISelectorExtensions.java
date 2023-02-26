@@ -1,6 +1,6 @@
 package capitalistspz.twwadh.interfaces;
 
-import capitalistspz.twwadh.command.RelationOption;
+import capitalistspz.twwadh.command.argument.RelationOption;
 import net.minecraft.predicate.NumberRange;
 
 public interface ISelectorExtensions {

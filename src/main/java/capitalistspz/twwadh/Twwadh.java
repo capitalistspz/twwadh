@@ -6,9 +6,11 @@ import org.apache.logging.log4j.Logger;
 
 
 public class Twwadh implements ModInitializer {
+    public static Logger log = LogManager.getLogger();
+
     @Override
     public void onInitialize() {
 
     }
-    public static Logger log = LogManager.getLogger();
+
 }

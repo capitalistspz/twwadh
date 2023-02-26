@@ -1,4 +1,4 @@
-package capitalistspz.twwadh.command;
+package capitalistspz.twwadh.command.argument;
 
 import capitalistspz.twwadh.interfaces.IHaveLocationStorage;
 import com.mojang.brigadier.StringReader;
@@ -20,20 +20,22 @@ public class LocationPosArgument implements PosArgument {
     public static final DynamicCommandExceptionType UNKNOWN_LOCATION_EXCEPTION = new DynamicCommandExceptionType(id -> Text.translatable("location.unknown", id));
     Identifier id;
 
-    public LocationPosArgument(Identifier id){
+    public LocationPosArgument(Identifier id) {
         this.id = id;
     }
+
     public static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER = (context, builder)
-            -> CommandSource.suggestIdentifiers(((IHaveLocationStorage)context.getSource().getServer()).getLocationStorage().getIds(), builder);
+            -> CommandSource.suggestIdentifiers(((IHaveLocationStorage) context.getSource().getServer()).getLocationStorage().getIds(), builder);
+
     public static LocationPosArgument parse(StringReader reader) throws CommandSyntaxException, InvalidIdentifierException {
         return new LocationPosArgument(Identifier.fromCommandInput(reader));
     }
 
     public static Vec3d getPos(CommandContext<ServerCommandSource> context, String name) throws CommandSyntaxException {
         var id = IdentifierArgumentType.getIdentifier(context, name);
-        var storage = ((IHaveLocationStorage)context.getSource().getServer()).getLocationStorage();
+        var storage = ((IHaveLocationStorage) context.getSource().getServer()).getLocationStorage();
         var pos = storage.get(id);
-        if (pos == null){
+        if (pos == null) {
             throw UNKNOWN_LOCATION_EXCEPTION.create(id);
         }
         return pos;
@@ -41,11 +43,11 @@ public class LocationPosArgument implements PosArgument {
 
     @Override
     public Vec3d toAbsolutePos(ServerCommandSource source) {
-        var storage = ((IHaveLocationStorage)source.getServer()).getLocationStorage();
+        var storage = ((IHaveLocationStorage) source.getServer()).getLocationStorage();
         return storage.get(id);
     }
 
-    public Identifier getIdentifier(){
+    public Identifier getIdentifier() {
         return id;
     }
 
