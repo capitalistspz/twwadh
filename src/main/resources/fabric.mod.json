@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "twwadh",
-  "version": "1.0",
+  "version": "${version}",
   "description": "Features based on things that people in the Minecraft Commands server want in the base game",
   "name": "Things We Want And Don't Have",
   "authors": [

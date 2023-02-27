@@ -117,7 +117,7 @@ public abstract class EntitySelectorMxn implements ISelectorExtensions {
                 return entity.getVehicle() == relation;
             }
             case CONTROLLER -> {
-                return entity.getPrimaryPassenger() == relation;
+                return entity.getControllingPassenger() == relation;
             }
             case PASSENGERS -> {
                 return entity.hasPassenger(relation);
@@ -142,7 +142,7 @@ public abstract class EntitySelectorMxn implements ISelectorExtensions {
                 case ATTACKER ->
                         entity instanceof LivingEntity ent && attackerTimeRange.test(ent.getLastAttackedTime() - ent.age) ? ent.getAttacker() : null;
                 case VEHICLE -> entity.getVehicle();
-                case CONTROLLER -> entity.getPrimaryPassenger();
+                case CONTROLLER -> entity.getControllingPassenger();
                 case ORIGIN -> entity instanceof Ownable ownable ? ownable.getOwner() : null;
                 default -> null;
             };
