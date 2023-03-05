@@ -10,7 +10,6 @@
     "command.EntitySelectorMxn",
     "command.EntitySelectorOptionsMxn",
     "command.EntitySelectorReaderMxn",
-    "command.argument.ArgumentTypesMxn",
     "command.argument.BlockPosArgumentTypeMxn",
     "command.argument.Vec3ArgumentTypeMxn",
     "entity.player.PlayerEntityMxn",

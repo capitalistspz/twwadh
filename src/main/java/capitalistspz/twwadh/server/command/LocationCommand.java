@@ -1,12 +1,12 @@
 package capitalistspz.twwadh.server.command;
 
-import capitalistspz.twwadh.command.argument.AxisArgumentType;
 import capitalistspz.twwadh.command.argument.LocationPosArgument;
 import capitalistspz.twwadh.interfaces.IHaveLocationStorage;
 import capitalistspz.twwadh.util.TextHelper;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.command.argument.Vec3ArgumentType;
@@ -39,15 +39,22 @@ public class LocationCommand {
                                 executes(cmd -> executeListLocationEntries(cmd.getSource(), StringArgumentType.getString(cmd, "namespace")))).then(
                         argument("identifier", IdentifierArgumentType.identifier()).suggests(LocationPosArgument.SUGGESTION_PROVIDER).
                                 executes(cmd -> executeGetLocation(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"))).then(
-                                        argument("axis", AxisArgumentType.axis()).
-                                                executes(cmd -> executeGetAxis(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"), AxisArgumentType.getAxis(cmd, "axis"), null)).then(
-                                                        argument("scale", DoubleArgumentType.doubleArg()).
-                                                                executes(cmd -> executeGetAxis(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"), AxisArgumentType.getAxis(cmd, "axis"), DoubleArgumentType.getDouble(cmd, "scale"))))));
+                                        addAxisArguments("x")).then(
+                                        addAxisArguments("y")).then(
+                                        addAxisArguments("z")));
         command.then(commandRemove).
                 then(commandSet).
                 then(commandGet);
         dispatcher.register(command);
 
+    }
+
+    static ArgumentBuilder<ServerCommandSource, ?> addAxisArguments(String axis){
+        return literal(axis).
+                executes(cmd -> executeGetAxis(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"), Direction.Axis.CODEC.byId(axis)
+                        , null)).then(
+                argument("scale", DoubleArgumentType.doubleArg()).
+                        executes(cmd -> executeGetAxis(cmd.getSource(), IdentifierArgumentType.getIdentifier(cmd, "identifier"), Direction.Axis.CODEC.byId(axis), DoubleArgumentType.getDouble(cmd, "scale"))));
     }
 
     public static int executeGetAxis(ServerCommandSource src, Identifier id, Direction.Axis axis, Double scale) {
